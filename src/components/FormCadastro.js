@@ -1,29 +1,63 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {
     View,
     TextInput,
     Button,
-    StyleSheet
+    StyleSheet,
+    ImageBackground
 } from 'react-native';
 import {connect} from 'react-redux';
 
-import {modificaEmail,modificaSenha,modificaNome} from '../actions/authActions'
+import {modificaEmail,
+        modificaSenha,
+        modificaNome,
+        addUser,    
+} from '../actions/authActions'
 
 
-FormCadastro = (props) => {
-    console.log(props)
-    return (
-        <View style={styles.container}>
-            <View style={styles.containerTop}>
-                <TextInput style={styles.inputs} value={props.nome}  onChangeText={texto => props.modificaNome(texto)}  placeholder="Nome" ></TextInput>
-                <TextInput style={styles.inputs} value={props.email} onChangeText={texto => props.modificaEmail(texto)} placeholder="Email" ></TextInput>
-                <TextInput style={styles.inputs} value={props.senha} onChangeText={texto => props.modificaSenha(texto)} placeholder="Senha" ></TextInput>
-            </View>
-            <View  style={styles.containerBotton}>
-                <Button title="Cadastrar" color="#115E54" onPress={() => false}></Button>
-            </View>
-        </View>
-    );
+const bg = require('../../resources/images/bg.png');
+
+class FormCadastro extends Component {
+
+    _addUser(){
+
+        const {nome, email, senha} = this.props;
+
+        this.props.addUser({nome, email, senha});
+    }
+
+    render(){
+        return (
+            <ImageBackground style={{flex : 1, width:null}} source={bg}>
+                <View style={styles.container}>
+                    <View style={styles.containerTop}>
+                        <TextInput style={styles.inputs} 
+                                onChangeText={texto => this.props.modificaNome(texto)}  
+                                placeholder="Nome" 
+                                placeholderTextColor="#fff" 
+                        />
+                        <TextInput  style={styles.inputs} 
+                                    onChangeText={texto => this.props.modificaEmail(texto)} 
+                                    placeholder="Email" placeholderTextColor="#fff" 
+                        />
+                        <TextInput secureTextEntry 
+                                   style={styles.inputs} 
+                                   onChangeText={texto => this.props.modificaSenha(texto)} 
+                                   placeholder="Senha" 
+                                   placeholderTextColor="#fff" 
+                        />
+                    </View>
+                    <View  style={styles.containerBotton}>
+                        <Button title="Cadastrar" 
+                                color="#115E54" 
+                                onPress={() => this._addUser()}>
+                        </Button>
+                    </View>
+                </View>
+            </ImageBackground>
+        );
+    }
+        
 }
 
 const  mapStateToProps = state =>(
@@ -35,7 +69,13 @@ const  mapStateToProps = state =>(
 
 );
 
-export default connect(mapStateToProps, {modificaEmail,modificaSenha,modificaNome})(FormCadastro);
+export default connect(
+    mapStateToProps, 
+    {
+        modificaEmail,
+        modificaSenha,modificaNome,
+        addUser
+    })(FormCadastro);
 
 const styles = StyleSheet.create({
     container: {

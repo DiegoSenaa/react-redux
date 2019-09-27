@@ -19,6 +19,10 @@ export default (state= INITIAL_STATE,action) => {
         case 'mdofica_nome':
             console.log(action.type);
             return {...state, nome: action.payload};
+        
+        // case 'add_user':
+        //     console.log(action.type);
+        //     return {...state, nome: action.payload};
     
         default:
             return state;
